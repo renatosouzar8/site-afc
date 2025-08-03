@@ -10,18 +10,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 
   <style>
-    :root {
-      --primary:#e5093a; --primary-600:#c3072f;
-      --bg:#0e0f12; --surface:#15161b; --surface-2:rgba(255,255,255,.06);
-      --text:#e7e7ea; --muted:#a9a9b3; --accent:#ffd66d; --info:#3b82f6;
-      --border:rgba(255,255,255,.12); --glass:rgba(255,255,255,.04);
-      --shadow:0 10px 30px rgba(0,0,0,.35); --radius:14px;
+    :root{
+      --primary:#e5093a; --primary-600:#c3072f; --bg:#0e0f12; --surface:#15161b;
+      --surface-2:rgba(255,255,255,.06); --text:#e7e7ea; --muted:#a9a9b3;
+      --accent:#ffd66d; --info:#3b82f6; --border:rgba(255,255,255,.12);
+      --glass:rgba(255,255,255,.04); --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:14px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0; color:var(--text);
-      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif;
+      margin:0;color:var(--text);
+      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       background:
         radial-gradient(1200px 600px at 10% -10%, rgba(229,9,58,.2), transparent 60%),
         radial-gradient(1000px 600px at 90% 10%, rgba(255,214,109,.1), transparent 60%),
@@ -65,7 +65,6 @@
       background:linear-gradient(90deg,#fff,#ffd66d 60%,#fff);-webkit-background-clip:text;background-clip:text;color:transparent;
     }
     h3{font-family:'Outfit',sans-serif;font-weight:700;font-size:1.2rem;margin:0 0 16px;color:#fff;display:flex;align-items:center;gap:10px}
-
     .card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
 
     /* Home hero */
@@ -75,14 +74,6 @@
     }
     #home-card .welcome-title{font-family:'Outfit',sans-serif;font-size:2rem;font-weight:900;margin-bottom:10px}
     #home-card .welcome-text{color:var(--muted);font-size:1.05rem;max-width:640px;margin:0 auto 22px}
-
-    /* Próximo jogo */
-    #home-next-game{margin:0 auto;max-width:560px;background:rgba(229,9,58,.08);border:1px solid rgba(229,9,58,.35);border-radius:14px;padding:16px}
-    #home-next-game h4{margin:0 0 6px;color:var(--accent);font-family:'Outfit',sans-serif;letter-spacing:.5px;text-transform:uppercase;font-size:.95rem}
-    #home-next-game .match{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-    .match .teams{font-weight:800;font-size:1.15rem}
-    .match .date-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:999px;padding:8px 12px;color:#fff;font-weight:600}
-    .match .countdown{font-size:.9rem;color:var(--muted)}
 
     /* Tabelas */
     table{width:100%;border-collapse:collapse;margin-top:12px;overflow:clip;border-radius:10px}
@@ -94,12 +85,42 @@
     tbody tr:nth-child(even) td{background:rgba(255,255,255,.045)}
     tbody tr:hover td{background:rgba(229,9,58,.12)}
 
+    /* Lista básica/cards */
     .card-list{display:grid;gap:12px}
     .item-card{display:grid;gap:8px;background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:14px;transition:transform .15s, background .2s, border-color .2s}
     .item-card:hover{transform:translateY(-2px);background:rgba(255,255,255,.07);border-color:rgba(229,9,58,.35)}
     .item-title{font-weight:800}
     .item-sub{color:var(--muted);font-size:.95rem}
 
+    /* Jogadores por posição */
+    .posicoes-grid{
+      display:grid; gap:16px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media (max-width:1000px){ .posicoes-grid{grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width:640px){ .posicoes-grid{grid-template-columns: 1fr;} }
+
+    .posicao-card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02)); border:1px solid var(--border); border-radius:12px; padding:16px;}
+    .posicao-title{margin:0 0 12px; font-family:'Outfit',sans-serif; font-weight:900; letter-spacing:.3px;}
+    .jogadores-grid{
+      display:grid; gap:12px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+
+    .jogador-card{
+      background:var(--surface-2); border:1px solid var(--border); border-radius:12px; overflow:hidden;
+      transition:transform .15s, background .2s, border-color .2s;
+    }
+    .jogador-card:hover{transform:translateY(-2px); background:rgba(255,255,255,.07); border-color:rgba(229,9,58,.35)}
+    .jogador-thumb{
+      width:100%; aspect-ratio: 4/3; object-fit:cover; display:block;
+      background:#0b0c10;
+    }
+    .jogador-info{padding:10px}
+    .jogador-nome{font-weight:800}
+    .jogador-posicao{color:var(--muted); font-size:.9rem}
+
+    /* Stats e galeria */
     .stats-row{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:6px}
     .stat-box{background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;transition:transform .15s, background .2s, border-color .2s}
     .stat-box:hover{transform:translateY(-2px);background:rgba(255,255,255,.07);border-color:rgba(229,9,58,.35)}
@@ -124,7 +145,6 @@
     .lightbox.open{display:flex}
     .lightbox img{max-width:95vw;max-height:85vh;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow)}
     .lightbox .close{position:absolute;top:14px;right:14px;background:var(--glass);color:#fff;border:1px solid var(--border);border-radius:999px;padding:8px 12px;cursor:pointer}
-    .lightbox .close:hover{background:rgba(255,255,255,.08)}
 
     #admin-login{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);align-items:center;justify-content:center}
     #admin-login .modal{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:24px;border-radius:14px;width:92%;max-width:360px;box-shadow:var(--shadow)}
@@ -145,8 +165,6 @@
       .table-as-cards{display:grid;gap:12px}
       .bar{grid-template-columns:1fr}
       #home-card{background-size:160px}
-      .match{gap:8px}
-      .match .teams{font-size:1rem}
     }
   </style>
 </head>
@@ -185,11 +203,7 @@
     <section id="jogadores">
       <h2>Elenco</h2>
       <div class="card">
-        <div id="jogadores-cards" class="card-list"></div>
-        <table id="jogadores-table">
-          <thead><tr><th>Jogador</th><th>Posição</th></tr></thead>
-          <tbody></tbody>
-        </table>
+        <div id="jogadores-por-posicao" class="posicoes-grid"></div>
       </div>
     </section>
 
@@ -309,30 +323,31 @@
 
   <script>
     const STORAGE_KEY = 'afc_site_data_v1';
+    const ESCUDO = 'https://renatosouzar8.github.io/site-afc/galeria/escudo-afc.png'; // placeholder padrão
 
     const initialData = {
       jogadores: [
-        {"nome":"Maurílio","posicao":"Goleiro","gols":0,"assistencias":0},
-        {"nome":"Diego","posicao":"Zagueiro","gols":0,"assistencias":0},
-        {"nome":"Ditão","posicao":"Zagueiro","gols":0,"assistencias":0},
-        {"nome":"Wando","posicao":"Zagueiro","gols":0,"assistencias":0},
-        {"nome":"Rafael Moura","posicao":"Zagueiro","gols":0,"assistencias":0},
-        {"nome":"Cléber","posicao":"Lateral","gols":0,"assistencias":0},
-        {"nome":"Rique","posicao":"Lateral","gols":0,"assistencias":0},
-        {"nome":"Tael","posicao":"Lateral","gols":0,"assistencias":0},
-        {"nome":"Felipe França","posicao":"Volante","gols":0,"assistencias":0},
-        {"nome":"Felipe Costa","posicao":"Volante","gols":0,"assistencias":0},
-        {"nome":"Edgar","posicao":"Volante","gols":0,"assistencias":0},
-        {"nome":"Renato","posicao":"Meia","gols":4,"assistencias":2},
-        {"nome":"Neto","posicao":"Meia","gols":6,"assistencias":5},
-        {"nome":"Renan","posicao":"Meia","gols":0,"assistencias":0},
-        {"nome":"Higor","posicao":"Meia","gols":0,"assistencias":0},
-        {"nome":"William","posicao":"Meia","gols":0,"assistencias":0},
-        {"nome":"Rafael","posicao":"Atacante","gols":0,"assistencias":0},
-        {"nome":"Kelvin","posicao":"Atacante","gols":0,"assistencias":0},
-        {"nome":"Amaral","posicao":"Atacante","gols":0,"assistencias":0},
-        {"nome":"Edinho","posicao":"Atacante","gols":0,"assistencias":0},
-        {"nome":"Ricardinho","posicao":"Atacante","gols":0,"assistencias":0}
+        {"nome":"Maurílio","posicao":"Goleiro","gols":0,"assistencias":0,"foto":""},
+        {"nome":"Diego","posicao":"Zagueiro","gols":0,"assistencias":0,"foto":""},
+        {"nome":"Ditão","posicao":"Zagueiro","gols":0,"assistencias":0,"foto":""},
+        {"nome":"Wando","posicao":"Zagueiro","gols":0,"assistencias":0,"foto":""},
+        {"nome":"Rafael Moura","posicao":"Zagueiro","gols":0,"assistencias":0,"foto":""},
+        {"nome":"Cléber","posicao":"Lateral","gols":0,"assistencias":0,"foto":""},
+        {"nome":"Rique","posicao":"Lateral","gols":0,"assistencias":0,"foto":""},
+        {"nome":"Tael","posicao":"Lateral","gols":0,"assistencias":0,"foto":""},
+        {"nome":"Felipe França","posicao":"Volante","gols":0,"assistencias":0,"foto":""},
+        {"nome":"Felipe Costa","posicao":"Volante","gols":0,"assistencias":0,"foto":""},
+        {"nome":"Edgar","posicao":"Volante","gols":0,"assistencias":0,"foto":""},
+        {"nome":"Renato","posicao":"Meia","gols":4,"assistencias":2,"foto":""},
+        {"nome":"Neto","posicao":"Meia","gols":6,"assistencias":5,"foto":""},
+        {"nome":"Renan","posicao":"Meia","gols":0,"assistencias":0,"foto":""},
+        {"nome":"Higor","posicao":"Meia","gols":0,"assistencias":0,"foto":""},
+        {"nome":"William","posicao":"Meia","gols":0,"assistencias":0,"foto":""},
+        {"nome":"Rafael","posicao":"Atacante","gols":0,"assistencias":0,"foto":""},
+        {"nome":"Kelvin","posicao":"Atacante","gols":0,"assistencias":0,"foto":""},
+        {"nome":"Amaral","posicao":"Atacante","gols":0,"assistencias":0,"foto":""},
+        {"nome":"Edinho","posicao":"Atacante","gols":0,"assistencias":0,"foto":""},
+        {"nome":"Ricardinho","posicao":"Atacante","gols":0,"assistencias":0,"foto":""}
       ],
       calendario: [
         {"data":"2025-07-27","adversario":"Base 6","resultado":"3x2","detalhes":"Gols: Neto, Jefferson (2)"},
@@ -341,7 +356,7 @@
       ],
       galeria: [
         { src:"https://renatosouzar8.github.io/site-afc/galeria/foto_afc_campo.jpeg", alt:"Time AFC em campo" },
-        { src:"https://renatosouzar8.github.io/site-afc/galeria/escudo-afc.png", alt:"Escudo do AFC" }
+        { src: ESCUDO, alt:"Escudo do AFC" }
       ]
     };
 
@@ -352,17 +367,15 @@
     let siteData = normalizeData(loadFromStorage() || initialData);
     if(!loadFromStorage()) saveToStorage(siteData);
 
-    let generatedJsonString = '';
-    const DESKTOP_CARDS_JOGADORES = true;
     const DESKTOP_CARDS_CALENDARIO = true;
 
+    // Home
     function renderHome(){
       const nextGameContainer=document.getElementById('home-next-game');
       const proximosJogos=siteData.calendario.filter(j=>!j.resultado).sort((a,b)=>new Date(a.data)-new Date(b.data));
       if(proximosJogos.length>0){
         const proximoJogo=proximosJogos[0];
-        const dateObj=new Date(proximoJogo.data+'T00:00:00');
-        const dataFormatada=dateObj.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});
+        const dataFormatada=new Date(proximoJogo.data+'T00:00:00').toLocaleDateString('pt-BR',{weekday:'long', day:'2-digit', month:'long'});
         nextGameContainer.innerHTML=`
           <h4>Próximo Confronto</h4>
           <div class="match">
@@ -372,36 +385,68 @@
           </div>`;
         const target=new Date(proximoJogo.data+'T00:00:00').getTime();
         const el=document.getElementById('countdown-next');
-        const tick=()=>{const now=Date.now();const diff=target-now;
+        const tick=()=>{const diff=target-Date.now();
           if(diff<=0){el.textContent='É dia de jogo!';clearInterval(timer);return}
-          const d=Math.floor(diff/(1000*60*60*24));const h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-          el.textContent=`Faltam ${d}d ${h}h`};
-        const timer=setInterval(tick,1000*60); tick();
+          const d=Math.floor(diff/86400000); const h=Math.floor((diff%86400000)/3600000);
+          el.textContent=`Faltam ${d}d ${h}h`;
+        };
+        const timer=setInterval(tick,60000); tick();
       }else{
         nextGameContainer.innerHTML=`<h4>Fim de Temporada!</h4><p class="match">Aguarde o calendário do próximo ano.</p>`;
       }
     }
 
-    function isMobile(){return window.matchMedia('(max-width: 768px)').matches}
+    // Jogadores por posição (com fotos)
+    const MAP_POS = {
+      'Goleiro':'Goleiros',
+      'Zagueiro':'Zagueiros',
+      'Lateral':'Laterais',
+      'Volante':'Volantes',
+      'Meia':'Meias',
+      'Atacante':'Atacantes'
+    };
 
-    function renderJogadores(){
-      const tbody=document.querySelector('#jogadores-table tbody');
-      const cards=document.getElementById('jogadores-cards');
-      tbody.innerHTML=''; cards.innerHTML='';
-      const usarCards=isMobile()||DESKTOP_CARDS_JOGADORES;
-      siteData.jogadores.forEach(j=>{
-        if(usarCards){
-          const div=document.createElement('div'); div.className='item-card';
-          div.innerHTML=`<div class="item-title">${j.nome}</div><div class="item-sub">Posição: ${j.posicao}</div>`;
-          cards.appendChild(div);
-        }else{
-          tbody.innerHTML+=`<tr><td>${j.nome}</td><td>${j.posicao}</td></tr>`;
-        }
+    function renderJogadoresPorPosicao(){
+      const container = document.getElementById('jogadores-por-posicao');
+      container.innerHTML = '';
+
+      // Agrupa
+      const grupos = {};
+      siteData.jogadores.forEach(j => {
+        const key = MAP_POS[j.posicao] || j.posicao || 'Outros';
+        if(!grupos[key]) grupos[key] = [];
+        grupos[key].push(j);
       });
-      document.getElementById('jogadores-table').style.display=usarCards?'none':'table';
-      cards.style.display=usarCards?'grid':'none';
+
+      // Ordem desejada
+      const ordem = ['Goleiros','Zagueiros','Laterais','Volantes','Meias','Atacantes'];
+      const chaves = Object.keys(grupos).sort((a,b)=> ordem.indexOf(a)-ordem.indexOf(b));
+
+      chaves.forEach(posTitulo => {
+        const box = document.createElement('div');
+        box.className = 'posicao-card';
+        box.innerHTML = `<h3 class="posicao-title">${posTitulo}</h3><div class="jogadores-grid"></div>`;
+        const grid = box.querySelector('.jogadores-grid');
+
+        grupos[posTitulo].forEach(j => {
+          const foto = j.foto && j.foto.trim() ? j.foto.trim() : ESCUDO;
+          const card = document.createElement('div');
+          card.className = 'jogador-card';
+          card.innerHTML = `
+            <img class="jogador-thumb" src="${foto}" alt="${j.nome}">
+            <div class="jogador-info">
+              <div class="jogador-nome">${j.nome}</div>
+              <div class="jogador-posicao">${j.posicao}</div>
+            </div>`;
+          grid.appendChild(card);
+        });
+
+        container.appendChild(box);
+      });
     }
 
+    // Calendário (igual lógica anterior)
+    function isMobile(){return window.matchMedia('(max-width: 768px)').matches}
     function renderCalendario(){
       const tbody=document.querySelector('#calendario-table tbody');
       const cards=document.getElementById('calendario-cards');
@@ -422,6 +467,7 @@
       cards.style.display=usarCards?'grid':'none';
     }
 
+    // Histórico/Estatísticas/Galeria (mantidos)
     function getHistoricoData(){
       const jogosPassados=siteData.calendario.filter(j=>j.resultado).map(j=>{
         if(!j.resultado.includes('x')) return {...j,golsAFC:0,golsAdv:0};
@@ -540,6 +586,7 @@
       });
     }
 
+    // Lightbox
     function openLightbox(src,alt){
       const lb=document.getElementById('lightbox'); const img=document.getElementById('lightbox-img');
       img.src=src; img.alt=alt||'Foto ampliada'; lb.classList.add('open');
@@ -548,7 +595,8 @@
     document.getElementById('lightbox').addEventListener('click',(e)=>{if(e.target.id==='lightbox'||e.target.id==='lightbox-close') closeLightbox()});
     document.addEventListener('keydown',(e)=>{if(e.key==='Escape') closeLightbox()});
 
-    function initSite(){renderHome();renderJogadores();renderCalendario();renderHistorico();renderEstatisticas();renderGaleria()}
+    // Navegação e init
+    function initSite(){renderHome();renderJogadoresPorPosicao();renderCalendario();renderHistorico();renderEstatisticas();renderGaleria()}
     document.addEventListener('DOMContentLoaded',initSite);
 
     document.querySelectorAll('nav .menu-item').forEach(btn=>btn.addEventListener('click',()=>{
@@ -556,7 +604,7 @@
       document.getElementById(btn.dataset.tab).classList.add('active');
       document.querySelectorAll('nav .menu-item').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
-      if(btn.dataset.tab==='jogadores') renderJogadores();
+      if(btn.dataset.tab==='jogadores') renderJogadoresPorPosicao();
       if(btn.dataset.tab==='calendario') renderCalendario();
       if(btn.dataset.tab==='historico') renderHistorico();
       if(btn.dataset.tab==='estatisticas') renderEstatisticas();
@@ -565,11 +613,12 @@
 
     window.addEventListener('resize',()=>{
       const current=document.querySelector('section.active')?.id; if(!current) return;
-      if(current==='jogadores') renderJogadores();
+      if(current==='jogadores') renderJogadoresPorPosicao();
       if(current==='calendario') renderCalendario();
       if(current==='historico') renderHistorico();
     });
 
+    // Admin (mesmo fluxo, sem fotos por enquanto)
     document.getElementById('admin-btn').addEventListener('click',()=>{
       document.getElementById('admin-login').style.display='flex';
       document.getElementById('admin-msg-login').textContent='';
@@ -653,20 +702,10 @@
         }).filter(it=>it.src);
 
         const newData={jogadores:newJogadores,calendario:newCalendario,galeria:newGaleria};
-        generatedJsonString=JSON.stringify(newData,null,2);
-        document.getElementById('json-output-area').value=generatedJsonString;
-        document.getElementById('btn-download-generated').style.display='inline-block';
-
-        siteData=normalizeData(newData); saveToStorage(siteData); initSite();
-        msg.textContent='JSON gerado e salvo no navegador com sucesso!'; msg.style.color='var(--accent)';
+        siteData=normalizeData(newData); saveToStorage(siteData);
+        msg.textContent='Dados salvos no navegador.'; msg.style.color='var(--accent)';
+        initSite();
       }catch(e){msg.textContent='Erro ao gerar JSON: '+e.message; msg.style.color='#ff6b6b'}
-    });
-
-    document.getElementById('btn-download-generated').addEventListener('click',()=>{
-      if(!generatedJsonString) return;
-      const blob=new Blob([generatedJsonString],{type:'application/json'});
-      const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='dados_afc_atualizado.json'; a.click();
-      URL.revokeObjectURL(a.href);
     });
 
     document.getElementById('btn-clear-storage').addEventListener('click',()=>{
@@ -674,6 +713,7 @@
       document.getElementById('admin-msg-clear').textContent='Dados locais apagados. Recarregue a página para voltar aos dados do arquivo.';
     });
 
+    document.getElementById('btn-download-generated')?.addEventListener('click',()=>{});
     document.getElementById('btn-carregar-json').addEventListener('click',()=>{
       const jsonInput=document.getElementById('json-input-area').value;
       const msg=document.getElementById('admin-msg-load');
