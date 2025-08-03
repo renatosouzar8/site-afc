@@ -324,6 +324,10 @@
         <textarea id="json-output-area" placeholder="O JSON gerado aparecerá aqui..."></textarea>
         <button id="btn-download-generated" style="display:none;">Baixar JSON Gerado</button>
         <p id="admin-msg-generate" style="margin-top:10px;"></p>
+        <button id="btn-clear-storage" style="margin-top:8px;background:#374151;border:none;color:#fff;padding:10px 14px;border-radius:8px;cursor:pointer;">
+          Limpar dados salvos no navegador
+        </button>
+        <p id="admin-msg-clear" style="margin-top:8px;color:#a9a9b3;"></p>
       </div>
 
       <div class="admin-card">
@@ -355,8 +359,32 @@
   </div>
 
   <script>
-    // Dados iniciais (inclui galeria)
-    let siteData = {
+    // ===== Persistência no navegador =====
+    const STORAGE_KEY = 'afc_site_data_v1';
+
+    function saveToStorage(data) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+      catch(e) { console.warn('Falha ao salvar no localStorage:', e); }
+    }
+    function loadFromStorage() {
+      try {
+        const s = localStorage.getItem(STORAGE_KEY);
+        return s ? JSON.parse(s) : null;
+      } catch(e) {
+        console.warn('Falha ao ler do localStorage:', e);
+        return null;
+      }
+    }
+    function normalizeData(data) {
+      return {
+        jogadores: Array.isArray(data?.jogadores) ? data.jogadores : [],
+        calendario: Array.isArray(data?.calendario) ? data.calendario : [],
+        galeria: Array.isArray(data?.galeria) ? data.galeria : []
+      };
+    }
+
+    // ===== Dados base (fallback) =====
+    const initialData = {
       jogadores: [
         {"nome": "Maurílio", "posicao": "Goleiro", "gols": 0, "assistencias": 0},
         {"nome": "Diego", "posicao": "Zagueiro", "gols": 0, "assistencias": 0},
@@ -405,17 +433,19 @@
         {"data": "2025-12-21", "adversario": "Alvorada", "resultado": null, "detalhes": ""}
       ],
       galeria: [
-        // Exemplo inicial; ajuste o caminho para a sua foto
         { src: 'galeria/afc-grupo-01.jpg', alt: 'Time AFC em campo' }
       ]
     };
 
-    let generatedJsonString = '';
+    // Carrega storage ou usa fallback
+    let siteData = normalizeData(loadFromStorage() || initialData);
+    if (!loadFromStorage()) saveToStorage(siteData);
 
+    let generatedJsonString = '';
     const DESKTOP_CARDS_JOGADORES = true;
     const DESKTOP_CARDS_CALENDARIO = true;
 
-    // Render Home (próximo jogo)
+    // ===== Render Home =====
     function renderHome() {
       const nextGameContainer = document.getElementById('home-next-game');
       const proximosJogos = siteData.calendario.filter(j => !j.resultado).sort((a, b) => new Date(a.data) - new Date(b.data));
@@ -619,7 +649,7 @@
       });
     }
 
-    // Galeria
+    // ===== Galeria =====
     function renderGaleria() {
       const grid = document.getElementById('gallery-grid');
       if (!grid) return;
@@ -655,7 +685,7 @@
     });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 
-    // Inicialização
+    // ===== Inicialização =====
     function initSite() {
       renderHome();
       renderJogadores();
@@ -687,7 +717,7 @@
       if (current === 'historico') renderHistorico();
     });
 
-    // Admin modal
+    // ===== Admin modal =====
     document.getElementById('admin-btn').addEventListener('click', () => {
       document.getElementById('admin-login').style.display = 'flex';
       document.getElementById('admin-msg-login').textContent = '';
@@ -708,7 +738,7 @@
     window.checkPassword = checkPassword;
     window.closeAdmin = closeAdmin;
 
-    // Popular Admin
+    // ===== Popular Admin =====
     function populateAdminForms() {
       const calendarioTbody = document.getElementById('admin-calendario-tbody');
       const jogadoresTbody = document.getElementById('admin-jogadores-tbody');
@@ -753,6 +783,7 @@
         if (e.target.classList.contains('admin-remove')) {
           const idx = Number(e.target.getAttribute('data-idx'));
           siteData.galeria.splice(idx, 1);
+          saveToStorage(siteData);
           populateAdminForms();
         }
       };
@@ -760,6 +791,7 @@
       document.getElementById('btn-add-galeria-item').onclick = () => {
         siteData.galeria = Array.isArray(siteData.galeria) ? siteData.galeria : [];
         siteData.galeria.push({ src: '', alt: '' });
+        saveToStorage(siteData);
         populateAdminForms();
       };
 
@@ -769,7 +801,7 @@
       };
     }
 
-    // Gerar JSON
+    // ===== Gerar JSON (salva no storage também) =====
     document.getElementById('btn-generate-from-forms').addEventListener('click', () => {
       const msg = document.getElementById('admin-msg-generate');
       try {
@@ -788,10 +820,17 @@
         }).filter(item => item.src);
 
         const newData = { jogadores: newJogadores, calendario: newCalendario, galeria: newGaleria };
+
         generatedJsonString = JSON.stringify(newData, null, 2);
         document.getElementById('json-output-area').value = generatedJsonString;
         document.getElementById('btn-download-generated').style.display = 'inline-block';
-        msg.textContent = 'JSON gerado com sucesso! Você pode copiar ou baixar abaixo.';
+
+        // Atualiza estado + persiste
+        siteData = normalizeData(newData);
+        saveToStorage(siteData);
+        initSite();
+
+        msg.textContent = 'JSON gerado e salvo no navegador com sucesso!';
         msg.style.color = 'var(--accent)';
       } catch (e) {
         msg.textContent = 'Erro ao gerar JSON: ' + e.message;
@@ -810,20 +849,23 @@
       URL.revokeObjectURL(a.href);
     });
 
-    // Carregar JSON
+    // Limpar storage
+    document.getElementById('btn-clear-storage').addEventListener('click', () => {
+      localStorage.removeItem(STORAGE_KEY);
+      document.getElementById('admin-msg-clear').textContent = 'Dados locais apagados. Recarregue a página para voltar aos dados do arquivo.';
+    });
+
+    // Carregar JSON (salva no storage também)
     document.getElementById('btn-carregar-json').addEventListener('click', () => {
       const jsonInput = document.getElementById('json-input-area').value;
       const msg = document.getElementById('admin-msg-load');
       try {
         const newData = JSON.parse(jsonInput);
         if (newData.jogadores && newData.calendario) {
-          siteData = {
-            jogadores: newData.jogadores,
-            calendario: newData.calendario,
-            galeria: Array.isArray(newData.galeria) ? newData.galeria : []
-          };
+          siteData = normalizeData(newData);
+          saveToStorage(siteData);
           initSite();
-          msg.textContent = 'Dados carregados e site atualizado com sucesso!';
+          msg.textContent = 'Dados carregados, salvos no navegador e site atualizado!';
           msg.style.color = 'var(--accent)';
         } else {
           throw new Error('Formato do JSON inválido.');
