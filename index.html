@@ -70,7 +70,7 @@
     /* Home hero */
     #home-card{
       position:relative;text-align:center;padding:36px 22px;overflow:hidden;
-      background:linear-gradient(rgba(12,12,16,.75),rgba(12,12,16,.85)), url('https://renatosouzar8.github.io/site-afc/galeria/escudo-afc.png') center/220px no-repeat;
+      background:linear-gradient(rgba(12,12,16,.75),rgba(12,12,16,.85)), url('galeria/escudo-afc.png') center/220px no-repeat;
     }
     #home-card .welcome-title{font-family:'Outfit',sans-serif;font-size:2rem;font-weight:900;margin-bottom:10px}
     #home-card .welcome-text{color:var(--muted);font-size:1.05rem;max-width:640px;margin:0 auto 22px}
@@ -158,7 +158,7 @@
   <header>
     <div class="header-inner">
       <div class="logo-bar">
-        <img src="https://renatosouzar8.github.io/site-afc/galeria/escudo-afc.png" alt="AFC Escudo">
+        <img src="galeria/escudo-afc.png" alt="AFC Escudo">
         <h1>AFC</h1>
       </div>
       <nav>
@@ -183,6 +183,7 @@
       <div class="card gallery-card">
         <h3>Fotos do Grupo</h3>
         <div class="gallery-grid" id="gallery-grid"></div>
+        <div id="gallery-msg" class="item-sub" style="margin-top:6px"></div>
       </div>
     </section>
 
@@ -309,11 +310,12 @@
 
   <script>
     const STORAGE_KEY = 'afc_site_data_v1';
-    const ESCUDO = 'https://renatosouzar8.github.io/site-afc/galeria/escudo-afc.png';
+    const ESCUDO = 'galeria/escudo-afc.png';
 
+    // Dados iniciais
     const initialData = {
       jogadores: [
-	    {"nome":"Maurílio","posicao":"Goleiro","gols":0,"assistencias":0,"foto":"https://renatosouzar8.github.io/site-afc/galeria/jogadores/maurilio.jpg"},
+        {"nome":"Maurílio","posicao":"Goleiro","gols":0,"assistencias":0,"foto":"galeria/jogadores/maurilio.jpg"},
         {"nome":"Diego","posicao":"Zagueiro","gols":0,"assistencias":0,"foto":""},
         {"nome":"Ditão","posicao":"Zagueiro","gols":0,"assistencias":0,"foto":""},
         {"nome":"Wando","posicao":"Zagueiro","gols":0,"assistencias":0,"foto":""},
@@ -338,11 +340,13 @@
       calendario: [
         {"data":"2025-08-10","adversario":"Bandeirantes","resultado":null,"detalhes":""}
       ],
+      // Use caminhos relativos (sem domínio) para evitar cache de domínio diferente
       galeria: [
         { src: "galeria/foto_afc_campo.jpeg", alt: "Time AFC em campo" }
       ]
     };
 
+    // Storage helpers
     function saveToStorage(data){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}catch(e){}}
     function loadFromStorage(){try{const s=localStorage.getItem(STORAGE_KEY);return s?JSON.parse(s):null}catch(e){return null}}
     function normalizeData(d){return{jogadores:Array.isArray(d?.jogadores)?d.jogadores:[],calendario:Array.isArray(d?.calendario)?d.calendario:[],galeria:Array.isArray(d?.galeria)?d.galeria:[]}}
@@ -351,7 +355,6 @@
     if(!loadFromStorage()) saveToStorage(siteData);
 
     const DESKTOP_CARDS_CALENDARIO = true;
-
     function isMobile(){return window.matchMedia('(max-width: 768px)').matches}
 
     // Home
@@ -547,17 +550,30 @@
       });
     }
 
-    // Galeria com fallback
+    // Galeria com retry e fallback
     function renderGaleria(){
-      const grid=document.getElementById('gallery-grid'); if(!grid) return;
-      grid.innerHTML='';
+      const grid=document.getElementById('gallery-grid');
+      const msg=document.getElementById('gallery-msg');
+      if(!grid) return;
+      grid.innerHTML=''; msg.textContent='';
+
       const items=Array.isArray(siteData.galeria)?siteData.galeria:[];
-      if(!items.length){grid.innerHTML='<div class="item-sub">Ainda não há fotos na galeria.</div>';return;}
+      if(!items.length){msg.textContent='Ainda não há fotos na galeria.';return;}
+
       items.forEach(item=>{
         const div=document.createElement('div'); div.className='gallery-item';
         const img=document.createElement('img');
-        img.src=item.src; img.alt=item.alt||'Foto do grupo';
-        img.onerror=()=>{ if(img.src!==ESCUDO) img.src=ESCUDO; };
+        img.alt=item.alt||'Foto do grupo';
+        let tried=false;
+        img.onerror=()=>{
+          if(!tried){
+            tried=true;
+            img.src = (item.src||'') + (item.src?.includes('?') ? '&' : '?') + 't=' + Date.now();
+          }else{
+            img.src=ESCUDO;
+          }
+        };
+        img.src=item.src;
         div.appendChild(img);
         div.addEventListener('click',()=>openLightbox(img.src,img.alt));
         grid.appendChild(div);
@@ -680,7 +696,7 @@
         }).filter(it=>it.src);
 
         const newData={jogadores:newJogadores,calendario:newCalendario,galeria:newGaleria};
-        siteData=normalizeData(newData); saveToStorage(siteData); 
+        siteData=normalizeData(newData); saveToStorage(siteData);
         document.getElementById('json-output-area').value=JSON.stringify(newData,null,2);
         document.getElementById('btn-download-generated').style.display='inline-block';
         msg.textContent='Dados salvos no navegador e JSON gerado abaixo.'; msg.style.color='var(--accent)';
@@ -712,7 +728,7 @@
       }catch(e){msg.textContent='Erro ao carregar o JSON: '+e.message; msg.style.color='#ff6b6b'}
     });
 
-    // Loga falhas de imagens no console do navegador
+    // Loga falhas de imagens
     window.addEventListener('error', (e) => {
       const t = e.target;
       if (t && t.tagName === 'IMG') console.warn('Falha ao carregar imagem:', t.src);
