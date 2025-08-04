@@ -340,7 +340,6 @@
       calendario: [
         {"data":"2025-08-10","adversario":"Bandeirantes","resultado":null,"detalhes":""}
       ],
-      // Use caminhos relativos (sem domínio) para evitar cache de domínio diferente
       galeria: [
         { src: "galeria/foto_afc_campo.jpeg", alt: "Time AFC em campo" }
       ]
@@ -349,7 +348,16 @@
     // Storage helpers
     function saveToStorage(data){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}catch(e){}}
     function loadFromStorage(){try{const s=localStorage.getItem(STORAGE_KEY);return s?JSON.parse(s):null}catch(e){return null}}
-    function normalizeData(d){return{jogadores:Array.isArray(d?.jogadores)?d.jogadores:[],calendario:Array.isArray(d?.calendario)?d.calendario:[],galeria:Array.isArray(d?.galeria)?d.galeria:[]}}
+
+    // PATCH: blindagem — a galeria SEMPRE vem do arquivo (initialData),
+    // ignorando o que estiver no localStorage para o campo galeria.
+    function normalizeData(d){
+      return {
+        jogadores: Array.isArray(d?.jogadores) ? d.jogadores : [],
+        calendario: Array.isArray(d?.calendario) ? d.calendario : [],
+        galeria: initialData.galeria
+      };
+    }
 
     let siteData = normalizeData(loadFromStorage() || initialData);
     if(!loadFromStorage()) saveToStorage(siteData);
@@ -550,7 +558,7 @@
       });
     }
 
-    // Galeria com retry e fallback
+    // Galeria com retry e fallback (Home)
     function renderGaleria(){
       const grid=document.getElementById('gallery-grid');
       const msg=document.getElementById('gallery-msg');
@@ -691,15 +699,20 @@
           const i=row.querySelectorAll('input'); const base=siteData.jogadores[index];
           return {nome:base.nome,posicao:base.posicao,gols:parseInt(i[0].value||'0',10),assistencias:parseInt(i[1].value||'0',10),foto:base.foto||''};
         });
+        // A galeria exibida no site é blindada pelo normalizeData (vem do arquivo),
+        // mas ainda geramos/permitimos exportar o que estiver no formulário:
         const newGaleria=Array.from(document.querySelectorAll('#admin-galeria-tbody tr')).map(row=>{
           const i=row.querySelectorAll('input'); return {src:i[0].value.trim(),alt:i[1].value.trim()};
         }).filter(it=>it.src);
 
         const newData={jogadores:newJogadores,calendario:newCalendario,galeria:newGaleria};
-        siteData=normalizeData(newData); saveToStorage(siteData);
+        siteData=normalizeData(newData); // aplica blindagem (galeria = initialData.galeria)
+        saveToStorage(siteData);
+
         document.getElementById('json-output-area').value=JSON.stringify(newData,null,2);
         document.getElementById('btn-download-generated').style.display='inline-block';
-        msg.textContent='Dados salvos no navegador e JSON gerado abaixo.'; msg.style.color='var(--accent)';
+        msg.textContent='Dados salvos no navegador e JSON gerado abaixo. (A galeria exibida na Home é a do arquivo, por segurança)'; 
+        msg.style.color='var(--accent)';
         initSite();
       }catch(e){msg.textContent='Erro ao gerar JSON: '+e.message; msg.style.color='#ff6b6b'}
     });
@@ -722,8 +735,11 @@
       try{
         const newData=JSON.parse(jsonInput);
         if(newData.jogadores && newData.calendario){
-          siteData=normalizeData(newData); saveToStorage(siteData); initSite();
-          msg.textContent='Dados carregados, salvos no navegador e site atualizado!'; msg.style.color='var(--accent)';
+          siteData=normalizeData(newData); // mantém galeria do arquivo
+          saveToStorage(siteData); 
+          initSite();
+          msg.textContent='Dados carregados, salvos no navegador e site atualizado! (Galeria segue a do arquivo)'; 
+          msg.style.color='var(--accent)';
         }else{throw new Error('Formato do JSON inválido.');}
       }catch(e){msg.textContent='Erro ao carregar o JSON: '+e.message; msg.style.color='#ff6b6b'}
     });
