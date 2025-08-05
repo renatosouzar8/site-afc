@@ -1,0 +1,291 @@
+{
+  "jogadores": [
+    {
+      "nome": "Maurílio",
+      "posicao": "Goleiro",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": "https://renatosouzar8.github.io/site-afc/galeria/jogadores/maurilio.jpg"
+    },
+    {
+      "nome": "Diego",
+      "posicao": "Zagueiro",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    },
+    {
+      "nome": "Ditão",
+      "posicao": "Zagueiro",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    },
+    {
+      "nome": "Wando",
+      "posicao": "Zagueiro",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    },
+    {
+      "nome": "Rafael Moura",
+      "posicao": "Zagueiro",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    },
+    {
+      "nome": "Cléber",
+      "posicao": "Lateral",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    },
+    {
+      "nome": "Rique",
+      "posicao": "Lateral",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    },
+    {
+      "nome": "Tael",
+      "posicao": "Lateral",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    },
+    {
+      "nome": "Felipe França",
+      "posicao": "Volante",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    },
+    {
+      "nome": "Felipe Costa",
+      "posicao": "Volante",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    },
+    {
+      "nome": "Edgar",
+      "posicao": "Volante",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    },
+    {
+      "nome": "Renato",
+      "posicao": "Meia",
+      "gols": 4,
+      "assistencias": 2,
+      "foto": ""
+    },
+    {
+      "nome": "Neto",
+      "posicao": "Meia",
+      "gols": 6,
+      "assistencias": 5,
+      "foto": ""
+    },
+    {
+      "nome": "Renan",
+      "posicao": "Meia",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    },
+    {
+      "nome": "Higor",
+      "posicao": "Meia",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    },
+    {
+      "nome": "William",
+      "posicao": "Meia",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    },
+    {
+      "nome": "Rafael",
+      "posicao": "Atacante",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    },
+    {
+      "nome": "Kelvin",
+      "posicao": "Atacante",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    },
+    {
+      "nome": "Amaral",
+      "posicao": "Atacante",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    },
+    {
+      "nome": "Edinho",
+      "posicao": "Atacante",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    },
+    {
+      "nome": "Ricardinho",
+      "posicao": "Atacante",
+      "gols": 0,
+      "assistencias": 0,
+      "foto": ""
+    }
+  ],
+  "calendario": [
+    {
+      "data": "2025-07-27",
+      "adversario": "Base 6",
+      "resultado": "3x2",
+      "detalhes": "Gols: Neto, Jefferson (2)"
+    },
+    {
+      "data": "2025-08-03",
+      "adversario": "Sabesp",
+      "resultado": "3x1",
+      "detalhes": ""
+    },
+    {
+      "data": "2025-08-10",
+      "adversario": "Bandeirantes",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-08-17",
+      "adversario": "Show de Domingo",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-08-24",
+      "adversario": "Recanto",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-08-31",
+      "adversario": "Time do Domingos",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-09-07",
+      "adversario": "2 de Janeiro",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-09-14",
+      "adversario": "Alvorada",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-09-21",
+      "adversario": "Colômbia",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-09-28",
+      "adversario": "Base 6",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-10-05",
+      "adversario": "Confiança",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-10-12",
+      "adversario": "EC Sem Nome",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-10-19",
+      "adversario": "Guamium",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-10-26",
+      "adversario": "Recanto",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-11-02",
+      "adversario": "Base 6",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-11-09",
+      "adversario": "Show de Domingo",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-11-16",
+      "adversario": "Bandeirantes",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-11-23",
+      "adversario": "Festival",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-11-30",
+      "adversario": "Ponte Preta",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-12-07",
+      "adversario": "Farc",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-12-14",
+      "adversario": "Colômbia",
+      "resultado": null,
+      "detalhes": ""
+    },
+    {
+      "data": "2025-12-21",
+      "adversario": "Alvorada",
+      "resultado": null,
+      "detalhes": ""
+    }
+  ],
+  "galeria": [
+    {
+      "src": "https://github.com/renatosouzar8/site-afc/galeria/foto_afc_campo.jpeg",
+      "alt": "AFC x Sabesp"
+    }
+  ]
+}
