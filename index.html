@@ -50,6 +50,7 @@
       font-family:'Outfit',sans-serif;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
       font-size:.85rem;padding:10px 16px;border-radius:999px;cursor:pointer;
       transition:transform .15s, background .2s, border-color .2s;
+      text-decoration: none;
     }
     nav .menu-item:hover{background:rgba(255,255,255,.08);transform:translateY(-1px)}
     nav .menu-item.active{background:linear-gradient(180deg,var(--primary),var(--primary-600));border-color:transparent;box-shadow:0 8px 20px rgba(229,9,58,.35);color:#fff}
@@ -67,7 +68,6 @@
     h3{font-family:'Outfit',sans-serif;font-weight:700;font-size:1.2rem;margin:0 0 16px;color:#fff;display:flex;align-items:center;gap:10px}
     .card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
 
-    /* Home hero */
     #home-card{
       position:relative;text-align:center;padding:36px 22px;overflow:hidden;
       background:linear-gradient(rgba(12,12,16,.75),rgba(12,12,16,.85)), url('galeria/escudo-afc.png') center/220px no-repeat;
@@ -75,7 +75,6 @@
     #home-card .welcome-title{font-family:'Outfit',sans-serif;font-size:2rem;font-weight:900;margin-bottom:10px}
     #home-card .welcome-text{color:var(--muted);font-size:1.05rem;max-width:640px;margin:0 auto 22px}
 
-    /* Tabelas e listas básicas */
     table{width:100%;border-collapse:collapse;margin-top:12px;overflow:clip;border-radius:10px}
     thead th{
       position:sticky;top:0;background:linear-gradient(180deg,var(--primary),var(--primary-600));
@@ -91,7 +90,6 @@
     .item-title{font-weight:800}
     .item-sub{color:var(--muted);font-size:.95rem}
 
-    /* Jogadores por posição */
     .posicoes-grid{display:grid;gap:16px;grid-template-columns:repeat(3,1fr)}
     @media (max-width:1000px){.posicoes-grid{grid-template-columns:repeat(2,1fr)}}
     @media (max-width:640px){.posicoes-grid{grid-template-columns:1fr}}
@@ -106,7 +104,6 @@
     .jogador-nome{font-weight:800}
     .jogador-posicao{color:var(--muted);font-size:.9rem}
 
-    /* Stats e galeria */
     .stats-row{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:6px}
     .stat-box{background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;transition:transform .15s, background .2s, border-color .2s}
     .stat-box:hover{transform:translateY(-2px);background:rgba(255,255,255,.07);border-color:rgba(229,9,58,.35)}
@@ -115,11 +112,15 @@
 
     .bar-chart{margin-top:16px;background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:16px}
     .bar-chart h4{margin:0 0 10px;font-family:'Outfit',sans-serif}
-    .bar{display:grid;grid-template-columns:140px 1fr;gap:12px;align-items:center;padding:6px 0}
-    .bar .label{font-weight:700;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .bar .track{position:relative;height:14px;background:rgba(255,255,255,.08);border:1px solid var(--border);border-radius:999px;overflow:hidden}
-    .bar .fill-goals{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,var(--primary),var(--primary-600));transition:width .6s}
-    .bar .fill-assists{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,var(--info),#2563eb);opacity:.75;transition:width .6s .05s}
+    .bar-chart-row{display:grid;grid-template-columns:140px 1fr;gap:12px;align-items:center;margin-bottom:12px}
+    .bar-chart-label{font-weight:700;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .bar-container{display:flex;flex-direction:column;gap:6px}
+    .bar-item{display:flex;align-items:center;gap:8px}
+    .bar-track{flex-grow:1;height:12px;background:rgba(255,255,255,.08);border:1px solid var(--border);border-radius:999px;overflow:hidden}
+    .bar-fill{height:100%;width:0;transition:width .6s;border-radius:999px}
+    .bar-fill-goals{background:linear-gradient(90deg,var(--primary),var(--primary-600))}
+    .bar-fill-assists{background:linear-gradient(90deg,var(--info),#2563eb)}
+    .bar-value{font-size:.85rem;color:var(--muted);min-width:80px}
 
     .gallery-card{margin-top:16px}
     .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
@@ -132,26 +133,24 @@
     .lightbox img{max-width:95vw;max-height:85vh;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow)}
     .lightbox .close{position:absolute;top:14px;right:14px;background:var(--glass);color:#fff;border:1px solid var(--border);border-radius:999px;padding:8px 12px;cursor:pointer}
 
-    #admin-login{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);align-items:center;justify-content:center}
-    #admin-login .modal{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:24px;border-radius:14px;width:92%;max-width:360px;box-shadow:var(--shadow)}
-    #admin-login input{width:100%;padding:12px;margin:10px 0 6px;background:rgba(255,255,255,.06);border:1px solid var(--border);color:#fff;border-radius:10px}
-    #admin-login button{padding:10px 16px;margin:10px 6px 0 0;border:1px solid var(--border);background:var(--glass);color:#fff;border-radius:10px;cursor:pointer}
-
-    .admin-card{background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:18px}
-    .admin-form-table{width:100%}
-    .admin-form-table td,.admin-form-table th{padding:6px;text-align:left}
-    .admin-form-table input,#admin-panel textarea{width:100%;padding:10px;background:rgba(255,255,255,.06);border:1px solid var(--border);color:#fff;border-radius:10px}
-    #admin-panel button{background:linear-gradient(180deg,var(--primary),var(--primary-600));color:#fff;border:none;padding:12px 18px;border-radius:10px;font-size:1rem;cursor:pointer;margin-top:10px;font-weight:700;box-shadow:0 8px 18px rgba(229,9,58,.3)}
-    .action-button{background:linear-gradient(180deg,#16a34a,#0f8a3c)!important;box-shadow:0 8px 18px rgba(16,185,129,.25)!important}
-    .admin-thumb{width:80px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.05)}
-    .admin-remove{background:#b91c1c;color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer}
-
     @media (max-width:768px){
       table{display:none}
       .table-as-cards{display:grid;gap:12px}
-      .bar{grid-template-columns:1fr}
       #home-card{background-size:160px}
     }
+
+    .player-modal-overlay{display:none;position:fixed;inset:0;z-index:4000;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);align-items:center;justify-content:center}
+    .player-modal-overlay.open{display:flex}
+    .player-modal-content{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;width:92%;max-width:400px;text-align:center;animation:fadeIn .3s ease}
+    .player-modal-close{position:absolute;top:10px;right:10px;background:var(--glass);color:#fff;border:1px solid var(--border);border-radius:999px;padding:6px 10px;cursor:pointer}
+    #player-modal-img{width:120px;height:120px;object-fit:cover;border-radius:50%;border:4px solid var(--primary);margin-bottom:16px;background:#0b0c10}
+    #player-modal-name{font-family:'Outfit',sans-serif;font-size:1.8rem;margin-bottom:12px}
+    #player-modal-details{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left}
+    #player-modal-details .detail-item{background:var(--surface-2);padding:12px;border-radius:10px;border:1px solid var(--border)}
+    #player-modal-details .detail-label{font-size:.8rem;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
+    #player-modal-details .detail-value{font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:700;color:#fff}
+    .jogador-card .details-btn{margin-top:8px;width:calc(100% - 20px);margin-left:10px;margin-right:10px;margin-bottom:10px;padding:8px;background:var(--primary-600);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;transition:background .2s}
+    .jogador-card .details-btn:hover{background:var(--primary)}
   </style>
 </head>
 <body>
@@ -167,7 +166,7 @@
         <button class="menu-item" data-tab="calendario">Calendário</button>
         <button class="menu-item" data-tab="historico">Histórico</button>
         <button class="menu-item" data-tab="estatisticas">Estatísticas</button>
-        <button class="admin-btn" id="admin-btn">⚙️ Admin</button>
+        <a href="admin.html" class="admin-btn">⚙️ Admin</a>
       </nav>
     </div>
   </header>
@@ -241,155 +240,42 @@
         </div>
       </div>
     </section>
-
-    <section id="admin-panel">
-      <h2>Painel de Administração</h2>
-
-      <div class="admin-card">
-        <h3>Editar Calendário e Resultados</h3>
-        <table class="admin-form-table">
-          <thead><tr><th>Data</th><th>Adversário</th><th>Resultado</th><th>Detalhes</th></tr></thead>
-          <tbody id="admin-calendario-tbody"></tbody>
-        </table>
-      </div>
-
-      <div class="admin-card">
-        <h3>Editar Estatísticas dos Jogadores</h3>
-        <table class="admin-form-table">
-          <thead><tr><th>Jogador</th><th>Gols</th><th>Assistências</th></tr></thead>
-          <tbody id="admin-jogadores-tbody"></tbody>
-        </table>
-      </div>
-
-      <div class="admin-card">
-        <h3>Gerenciar Galeria</h3>
-        <p>Use links do GitHub Pages ou caminhos relativos do projeto.</p>
-        <table class="admin-form-table">
-          <thead><tr><th>Pré-visualização</th><th>Caminho (src)</th><th>Descrição (alt)</th><th>Ações</th></tr></thead>
-          <tbody id="admin-galeria-tbody"></tbody>
-        </table>
-        <button id="btn-add-galeria-item" class="action-button">Adicionar Foto</button>
-        <button id="btn-refresh-galeria" style="margin-left:8px;">Recarregar Galeria no Site</button>
-      </div>
-
-      <div class="admin-card">
-        <h3>Exportar/Importar Dados</h3>
-        <button id="btn-generate-from-forms" class="action-button">Gerar JSON a partir dos Formulários</button>
-        <textarea id="json-output-area" placeholder="O JSON gerado aparecerá aqui..."></textarea>
-        <button id="btn-download-generated" style="display:none;">Baixar JSON Gerado</button>
-        <p id="admin-msg-generate" style="margin-top:10px;"></p>
-
-        <button id="btn-clear-storage" style="margin-top:8px;background:#374151;border:none;color:#fff;padding:10px 14px;border-radius:8px;cursor:pointer;">
-          Limpar dados salvos no navegador
-        </button>
-        <p id="admin-msg-clear" style="margin-top:8px;color:#a9a9b3;"></p>
-
-        <textarea id="json-input-area" placeholder="Cole aqui o conteúdo do arquivo dados_afc.json..."></textarea>
-        <button id="btn-carregar-json">Carregar Novos Dados</button>
-        <p id="admin-msg-load" style="margin-top:10px;"></p>
-      </div>
-    </section>
   </main>
+
+  <div id="player-modal" class="player-modal-overlay">
+    <div class="player-modal-content">
+      <button id="player-modal-close" class="player-modal-close">✕</button>
+      <img id="player-modal-img" src="" alt="Foto do Jogador">
+      <h3 id="player-modal-name"></h3>
+      <div id="player-modal-details"></div>
+    </div>
+  </div>
 
   <div class="lightbox" id="lightbox">
     <button class="close" id="lightbox-close">Fechar ✕</button>
     <img id="lightbox-img" src="" alt="Foto ampliada" />
   </div>
 
-  <div id="admin-login">
-    <div class="modal">
-      <h3>Área Administrativa</h3>
-      <input type="password" id="admin-pass" placeholder="Senha" />
-      <div>
-        <button onclick="checkPassword()">Entrar</button>
-        <button onclick="closeAdmin()">Cancelar</button>
-      </div>
-      <p id="admin-msg-login" style="color:#ff6b6b;"></p>
-    </div>
-  </div>
-
   <script>
     const STORAGE_KEY = 'afc_site_data_v1';
     const ESCUDO = 'galeria/escudo-afc.png';
-    const REMOTE_JSON = 'dados_afc.json'; // arquivo na raiz do repositório (GitHub Pages)
+    const REMOTE_JSON = 'dados_afc.json';
 
-    // Dados iniciais (fallback local)
     const initialData = {
-      jogadores: [
-        {"nome":"Maurílio","posicao":"Goleiro","gols":0,"assistencias":0,"foto":"galeria/jogadores/maurilio.jpg"},
-        {"nome":"Diego","posicao":"Zagueiro","gols":0,"assistencias":0,"foto":""},
-        {"nome":"Ditão","posicao":"Zagueiro","gols":0,"assistencias":0,"foto":""},
-        {"nome":"Wando","posicao":"Zagueiro","gols":0,"assistencias":0,"foto":""},
-        {"nome":"Rafael Moura","posicao":"Zagueiro","gols":0,"assistencias":0,"foto":""},
-        {"nome":"Cléber","posicao":"Lateral","gols":0,"assistencias":0,"foto":""},
-        {"nome":"Rique","posicao":"Lateral","gols":0,"assistencias":0,"foto":""},
-        {"nome":"Tael","posicao":"Lateral","gols":0,"assistencias":0,"foto":""},
-        {"nome":"Felipe França","posicao":"Volante","gols":0,"assistencias":0,"foto":""},
-        {"nome":"Felipe Costa","posicao":"Volante","gols":0,"assistencias":0,"foto":""},
-        {"nome":"Edgar","posicao":"Volante","gols":0,"assistencias":0,"foto":""},
-        {"nome":"Renato","posicao":"Meia","gols":4,"assistencias":2,"foto":""},
-        {"nome":"Neto","posicao":"Meia","gols":6,"assistencias":5,"foto":""},
-        {"nome":"Renan","posicao":"Meia","gols":0,"assistencias":0,"foto":""},
-        {"nome":"Higor","posicao":"Meia","gols":0,"assistencias":0,"foto":""},
-        {"nome":"William","posicao":"Meia","gols":0,"assistencias":0,"foto":""},
-        {"nome":"Rafael","posicao":"Atacante","gols":0,"assistencias":0,"foto":""},
-        {"nome":"Kelvin","posicao":"Atacante","gols":0,"assistencias":0,"foto":""},
-        {"nome":"Amaral","posicao":"Atacante","gols":0,"assistencias":0,"foto":""},
-        {"nome":"Edinho","posicao":"Atacante","gols":0,"assistencias":0,"foto":""},
-        {"nome":"Ricardinho","posicao":"Atacante","gols":0,"assistencias":0,"foto":""}
-      ],
-      calendario: [
-        {"data":"2025-08-10","adversario":"Bandeirantes","resultado":null,"detalhes":""}
-      ],
-      // Galeria blindada: sempre do arquivo local
-      galeria: [
-        { src: "galeria/foto_afc_campo.jpeg", alt: "Time AFC em campo" }
-      ]
+      jogadores: [],
+      calendario: [],
+      galeria: []
     };
 
-    // Helpers de storage
     function saveToStorage(data){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}catch(e){}}
     function loadFromStorage(){try{const s=localStorage.getItem(STORAGE_KEY);return s?JSON.parse(s):null}catch(e){return null}}
 
-    // BLINDAGEM: galeria SEMPRE do initialData (arquivo), ignorando storage/JSON remoto.
     function normalizeData(d){
       return {
         jogadores: Array.isArray(d?.jogadores) ? d.jogadores : [],
         calendario: Array.isArray(d?.calendario) ? d.calendario : [],
-        galeria: initialData.galeria
+        galeria: Array.isArray(d?.galeria) ? d.galeria : initialData.galeria
       };
-    }
-
-    // Ajusta caminhos vindos do JSON remoto (recomendado usar relativos no próprio arquivo)
-    function fixPaths(data){
-      // Força caminhos relativos/Pages válidos na galeria, se vierem de github.com
-      const fixedGaleria = (Array.isArray(data.galeria)?data.galeria:[]).map(it=>{
-        let src = (it.src||'').trim();
-        if(!src) return null;
-        // Se for link do github.com (página HTML), troca para GitHub Pages
-        if(src.startsWith('https://github.com/')){
-          const parts = src.split('/').slice(3); // user/repo/...
-          src = `https://renatosouzar8.github.io/${parts[1]}/${parts.slice(2).join('/')}`;
-        }
-        return {src, alt: it.alt||''};
-      }).filter(Boolean);
-
-      // Recomendo relativo:
-      // se o src começar com 'https://renatosouzar8.github.io/site-afc/', converte para relativo.
-      fixedGaleria.forEach(it=>{
-        const prefix = 'https://renatosouzar8.github.io/site-afc/';
-        if(it.src.startsWith(prefix)) it.src = it.src.replace(prefix,'');
-      });
-
-      // Ajusta fotos de jogadores para relativo quando forem de Pages do próprio site
-      const fixedJog = (Array.isArray(data.jogadores)?data.jogadores:[]).map(j=>{
-        let foto = (j.foto||'').trim();
-        const prefix = 'https://renatosouzar8.github.io/site-afc/';
-        if(foto.startsWith(prefix)) foto = foto.replace(prefix,'');
-        return {...j, foto};
-      });
-
-      return {...data, jogadores: fixedJog, galeria: fixedGaleria};
     }
 
     let siteData = normalizeData(loadFromStorage() || initialData);
@@ -399,12 +285,10 @@
         const res = await fetch(REMOTE_JSON, {cache:'no-store'});
         if(!res.ok) throw new Error('HTTP '+res.status);
         const remote = await res.json();
-        const fixed = fixPaths(remote);
-        siteData = normalizeData(fixed); // aplica blindagem da galeria
+        siteData = normalizeData(remote);
         saveToStorage(siteData);
       }catch(err){
         console.warn('Falha ao buscar dados remotos:', err);
-        // Usa storage se existir, senão initialData
         const local = loadFromStorage();
         siteData = normalizeData(local || initialData);
         if(!local) saveToStorage(siteData);
@@ -414,10 +298,17 @@
     const DESKTOP_CARDS_CALENDARIO = true;
     function isMobile(){return window.matchMedia('(max-width: 768px)').matches}
 
-    // Home
     function renderHome(){
       const nextGameContainer=document.getElementById('home-next-game');
-      const proximosJogos=siteData.calendario.filter(j=>!j.resultado).sort((a,b)=>new Date(a.data)-new Date(b.data));
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const proximosJogos=siteData.calendario.filter(j => {
+        const gameDate = new Date(j.data + 'T00:00:00');
+        return gameDate >= today;
+      }).sort((a,b)=>new Date(a.data)-new Date(b.data));
+
       if(proximosJogos.length>0){
         const proximoJogo=proximosJogos[0];
         const dataFormatada=new Date(proximoJogo.data+'T00:00:00').toLocaleDateString('pt-BR',{weekday:'long', day:'2-digit', month:'long'});
@@ -441,7 +332,6 @@
       }
     }
 
-    // Jogadores por posição
     const MAP_POS = {'Goleiro':'Goleiros','Zagueiro':'Zagueiros','Lateral':'Laterais','Volante':'Volantes','Meia':'Meias','Atacante':'Atacantes'};
     function renderJogadoresPorPosicao(){
       const container = document.getElementById('jogadores-por-posicao');
@@ -473,7 +363,15 @@
           const info = document.createElement('div');
           info.className = 'jogador-info';
           info.innerHTML = `<div class="jogador-nome">${j.nome}</div><div class="jogador-posicao">${j.posicao}</div>`;
-          card.appendChild(img); card.appendChild(info);
+
+          const detailsBtn = document.createElement('button');
+          detailsBtn.className = 'details-btn';
+          detailsBtn.textContent = 'Detalhes';
+          detailsBtn.onclick = () => openPlayerModal(j);
+
+          card.appendChild(img);
+          card.appendChild(info);
+          card.appendChild(detailsBtn);
           grid.appendChild(card);
         });
 
@@ -481,12 +379,54 @@
       });
     }
 
-    // Calendário
+    function openPlayerModal(player) {
+      const modal = document.getElementById('player-modal');
+      if (!modal || !player) return;
+
+      document.getElementById('player-modal-img').src = (player.foto && player.foto.trim()) ? player.foto.trim() : ESCUDO;
+      document.getElementById('player-modal-img').onerror = () => { document.getElementById('player-modal-img').src = ESCUDO; };
+      document.getElementById('player-modal-name').textContent = player.nome;
+
+      const detailsContainer = document.getElementById('player-modal-details');
+      detailsContainer.innerHTML = `
+        <div class="detail-item">
+          <div class="detail-label">Posição</div>
+          <div class="detail-value">${player.posicao || '-'}</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Idade</div>
+          <div class="detail-value">${player.idade || '-'}</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Gols</div>
+          <div class="detail-value">${player.gols}</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Assistências</div>
+          <div class="detail-value">${player.assistencias}</div>
+        </div>
+      `;
+
+      modal.classList.add('open');
+    }
+    function closePlayerModal() {
+      const modal = document.getElementById('player-modal');
+      if (modal) modal.classList.remove('open');
+    }
+
     function renderCalendario(){
       const tbody=document.querySelector('#calendario-table tbody');
       const cards=document.getElementById('calendario-cards');
       tbody.innerHTML=''; cards.innerHTML='';
-      const proximosJogos=siteData.calendario.filter(j=>!j.resultado).sort((a,b)=>new Date(a.data)-new Date(b.data));
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const proximosJogos=siteData.calendario.filter(j => {
+        const gameDate = new Date(j.data + 'T00:00:00');
+        return gameDate >= today;
+      }).sort((a,b)=>new Date(a.data)-new Date(b.data));
+
       const usarCards=isMobile()||DESKTOP_CARDS_CALENDARIO;
       proximosJogos.forEach(j=>{
         const dataFormatada=new Date(j.data+'T00:00:00').toLocaleDateString('pt-BR');
@@ -502,10 +442,15 @@
       cards.style.display=usarCards?'grid':'none';
     }
 
-    // Histórico
     function getHistoricoData(){
-      const jogosPassados=siteData.calendario.filter(j=>j.resultado).map(j=>{
-        if(!j.resultado.includes('x')) return {...j,golsAFC:0,golsAdv:0};
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const jogosPassados=siteData.calendario.filter(j => {
+        const gameDate = new Date(j.data + 'T00:00:00');
+        return gameDate < today;
+      }).map(j=>{
+        if(!j.resultado || !j.resultado.includes('x')) return {...j,golsAFC:0,golsAdv:0};
         const [gA,gB]=j.resultado.split('x').map(Number); return {...j,golsAFC:gA,golsAdv:gB};
       });
       const statsPorAdv={};
@@ -561,7 +506,6 @@
       };
     }
 
-    // Estatísticas
     function renderEstatisticas(){
       const {jogosPassados}=getHistoricoData();
       const v=jogosPassados.filter(j=>j.golsAFC>j.golsAdv).length;
@@ -589,25 +533,47 @@
     function renderBarChart(jogadores){
       const c=document.getElementById('bars-container'); c.innerHTML='';
       if(!jogadores.length){c.innerHTML='<div class="item-sub">Sem dados de gols/assistências no momento.</div>';return;}
-      const max=Math.max(...jogadores.map(j=>Math.max(j.gols,j.assistencias)),1);
+
+      const maxGoals = Math.max(...jogadores.map(j => j.gols), 1);
+      const maxAssists = Math.max(...jogadores.map(j => j.assistencias), 1);
+
       jogadores.forEach(j=>{
-        const row=document.createElement('div'); row.className='bar';
-        row.innerHTML=`<div class="label">${j.nome}</div>
-                       <div class="track">
-                         <div class="fill-goals" style="width:0%"></div>
-                         <div class="fill-assists" style="width:0%"></div>
-                       </div>`;
-        const values=document.createElement('div'); values.className='values';
-        values.textContent=`Gols: ${j.gols} • Assist.: ${j.assistencias}`;
-        row.appendChild(values); c.appendChild(row);
+        const row = document.createElement('div');
+        row.className = 'bar-chart-row';
+
+        row.innerHTML = `
+          <div class="bar-chart-label">${j.nome}</div>
+          <div class="bar-container">
+            <div class="bar-item">
+              <div class="bar-track">
+                <div class="bar-fill bar-fill-goals"></div>
+              </div>
+              <div class="bar-value">Gols: <strong>${j.gols}</strong></div>
+            </div>
+            <div class="bar-item">
+              <div class="bar-track">
+                <div class="bar-fill bar-fill-assists"></div>
+              </div>
+              <div class="bar-value">Assist.: <strong>${j.assistencias}</strong></div>
+            </div>
+          </div>
+        `;
+
+        c.appendChild(row);
+
         requestAnimationFrame(()=>{
-          row.querySelector('.fill-goals').style.width=Math.round((j.gols/max)*100)+'%';
-          row.querySelector('.fill-assists').style.width=Math.round((j.assistencias/max)*100)+'%';
+          const goalFill = row.querySelector('.bar-fill-goals');
+          const assistFill = row.querySelector('.bar-fill-assists');
+          if (goalFill) {
+            goalFill.style.width = Math.round((j.gols / maxGoals) * 100) + '%';
+          }
+          if (assistFill) {
+            assistFill.style.width = Math.round((j.assistencias / maxAssists) * 100) + '%';
+          }
         });
       });
     }
 
-    // Galeria com retry e fallback (Home)
     function renderGaleria(){
       const grid=document.getElementById('gallery-grid');
       const msg=document.getElementById('gallery-msg');
@@ -637,7 +603,6 @@
       });
     }
 
-    // Lightbox
     function openLightbox(src,alt){
       const lb=document.getElementById('lightbox'); const img=document.getElementById('lightbox-img');
       img.src=src; img.alt=alt||'Foto ampliada'; lb.classList.add('open');
@@ -646,15 +611,30 @@
     document.getElementById('lightbox').addEventListener('click',(e)=>{if(e.target.id==='lightbox'||e.target.id==='lightbox-close') closeLightbox()});
     document.addEventListener('keydown',(e)=>{if(e.key==='Escape') closeLightbox()});
 
-    // Navegação e init
     async function initSiteAsync(){
-      await loadData();      // busca dados do JSON remoto com fallback seguro
+      await loadData();
       renderHome();
       renderJogadoresPorPosicao();
       renderCalendario();
       renderHistorico();
       renderEstatisticas();
       renderGaleria();
+
+      const playerModal = document.getElementById('player-modal');
+      const playerModalCloseBtn = document.querySelector('.player-modal-close');
+      if (playerModal) {
+        playerModal.addEventListener('click', (e) => {
+          if (e.target.id === 'player-modal') closePlayerModal();
+        });
+      }
+      if (playerModalCloseBtn) {
+        playerModalCloseBtn.addEventListener('click', closePlayerModal);
+      }
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && playerModal?.classList.contains('open')) {
+          closePlayerModal();
+        }
+      });
     }
     document.addEventListener('DOMContentLoaded',initSiteAsync);
 
@@ -677,129 +657,6 @@
       if(current==='historico') renderHistorico();
     });
 
-    // Admin (continua funcionando, mas lembre-se que a galeria exibida é a do arquivo)
-    document.getElementById('admin-btn').addEventListener('click',()=>{
-      document.getElementById('admin-login').style.display='flex';
-      document.getElementById('admin-msg-login').textContent='';
-      document.getElementById('admin-pass').value='';
-    });
-    function closeAdmin(){document.getElementById('admin-login').style.display='none'}
-    function checkPassword(){
-      if(document.getElementById('admin-pass').value==='4940'){
-        document.querySelectorAll('main section').forEach(sec=>sec.classList.remove('active'));
-        document.getElementById('admin-panel').classList.add('active');
-        document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
-        populateAdminForms(); closeAdmin();
-      }else{document.getElementById('admin-msg-login').textContent='Senha incorreta!'}
-    }
-    window.checkPassword=checkPassword; window.closeAdmin=closeAdmin;
-
-    function populateAdminForms(){
-      const calendarioTbody=document.getElementById('admin-calendario-tbody');
-      const jogadoresTbody=document.getElementById('admin-jogadores-tbody');
-      const galeriaTbody=document.getElementById('admin-galeria-tbody');
-      calendarioTbody.innerHTML=''; jogadoresTbody.innerHTML=''; galeriaTbody.innerHTML='';
-
-      siteData.calendario.forEach(jogo=>{
-        calendarioTbody.innerHTML+=`
-          <tr>
-            <td><input type="date" value="${jogo.data}"></td>
-            <td><input type="text" value="${jogo.adversario}"></td>
-            <td><input type="text" placeholder="ex: 2x1" value="${jogo.resultado||''}"></td>
-            <td><input type="text" placeholder="Detalhes dos gols..." value="${jogo.detalhes||''}"></td>
-          </tr>`;
-      });
-
-      siteData.jogadores.forEach(jogador=>{
-        jogadoresTbody.innerHTML+=`
-          <tr>
-            <td>${jogador.nome} (${jogador.posicao})</td>
-            <td><input type="number" value="${jogador.gols}" min="0"></td>
-            <td><input type="number" value="${jogador.assistencias}" min="0"></td>
-          </tr>`;
-      });
-
-      const galeriaItems=Array.isArray(siteData.galeria)?siteData.galeria:[];
-      galeriaItems.forEach((foto,idx)=>{
-        const tr=document.createElement('tr');
-        tr.innerHTML=`
-          <td><img class="admin-thumb" src="${foto.src}" alt="${foto.alt||''}" onerror="this.src='${ESCUDO}'"></td>
-          <td><input type="text" value="${foto.src||''}" placeholder="URL ou caminho do arquivo"></td>
-          <td><input type="text" value="${foto.alt||''}" placeholder="Descrição"></td>
-          <td><button class="admin-remove" data-idx="${idx}">Remover</button></td>`;
-        galeriaTbody.appendChild(tr);
-      });
-
-      galeriaTbody.onclick=(e)=>{
-        if(e.target.classList.contains('admin-remove')){
-          const idx=Number(e.target.getAttribute('data-idx'));
-          siteData.galeria.splice(idx,1); saveToStorage(siteData); populateAdminForms();
-        }
-      };
-
-      document.getElementById('btn-add-galeria-item').onclick=()=>{
-        siteData.galeria=Array.isArray(siteData.galeria)?siteData.galeria:[];
-        siteData.galeria.push({src:'',alt:''}); saveToStorage(siteData); populateAdminForms();
-      };
-
-      document.getElementById('btn-refresh-galeria').onclick=()=>{renderGaleria(); alert('Galeria recarregada na página Início.')};
-    }
-
-    document.getElementById('btn-generate-from-forms').addEventListener('click',()=>{
-      const msg=document.getElementById('admin-msg-generate');
-      try{
-        const newCalendario=Array.from(document.querySelectorAll('#admin-calendario-tbody tr')).map(row=>{
-          const i=row.querySelectorAll('input');
-          return {data:i[0].value,adversario:i[1].value,resultado:i[2].value.trim()||null,detalhes:i[3].value};
-        });
-        const newJogadores=Array.from(document.querySelectorAll('#admin-jogadores-tbody tr')).map((row,index)=>{
-          const i=row.querySelectorAll('input'); const base=siteData.jogadores[index];
-          return {nome:base.nome,posicao:base.posicao,gols:parseInt(i[0].value||'0',10),assistencias:parseInt(i[1].value||'0',10),foto:base.foto||''};
-        });
-        const newGaleria=Array.from(document.querySelectorAll('#admin-galeria-tbody tr')).map(row=>{
-          const i=row.querySelectorAll('input'); return {src:i[0].value.trim(),alt:i[1].value.trim()};
-        }).filter(it=>it.src);
-
-        const newData={jogadores:newJogadores,calendario:newCalendario,galeria:newGaleria};
-        siteData=normalizeData(newData); // galeria segue a do arquivo (blindagem)
-        saveToStorage(siteData);
-
-        document.getElementById('json-output-area').value=JSON.stringify(newData,null,2);
-        document.getElementById('btn-download-generated').style.display='inline-block';
-        msg.textContent='Dados salvos no navegador e JSON gerado abaixo. (A galeria exibida na Home é a do arquivo, por segurança)'; 
-        msg.style.color='var(--accent)';
-        renderHome(); renderJogadoresPorPosicao(); renderCalendario(); renderHistorico(); renderEstatisticas(); renderGaleria();
-      }catch(e){msg.textContent='Erro ao gerar JSON: '+e.message; msg.style.color='#ff6b6b'}
-    });
-
-    document.getElementById('btn-download-generated').addEventListener('click',()=>{
-      const text=document.getElementById('json-output-area').value.trim(); if(!text) return;
-      const blob=new Blob([text],{type:'application/json'});
-      const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='dados_afc_atualizado.json'; a.click();
-      URL.revokeObjectURL(a.href);
-    });
-
-    document.getElementById('btn-clear-storage').addEventListener('click',()=>{
-      localStorage.removeItem(STORAGE_KEY);
-      document.getElementById('admin-msg-clear').textContent='Dados locais apagados. Recarregue a página para voltar aos dados do arquivo.';
-    });
-
-    document.getElementById('btn-carregar-json').addEventListener('click',()=>{
-      const jsonInput=document.getElementById('json-input-area').value;
-      const msg=document.getElementById('admin-msg-load');
-      try{
-        const newData=JSON.parse(jsonInput);
-        if(newData.jogadores && newData.calendario){
-          siteData=normalizeData(newData); // mantém galeria do arquivo
-          saveToStorage(siteData);
-          renderHome(); renderJogadoresPorPosicao(); renderCalendario(); renderHistorico(); renderEstatisticas(); renderGaleria();
-          msg.textContent='Dados carregados, salvos no navegador e site atualizado! (Galeria segue a do arquivo)'; 
-          msg.style.color='var(--accent)';
-        }else{throw new Error('Formato do JSON inválido.');}
-      }catch(e){msg.textContent='Erro ao carregar o JSON: '+e.message; msg.style.color='#ff6b6b'}
-    });
-
-    // Loga falhas de imagens
     window.addEventListener('error', (e) => {
       const t = e.target;
       if (t && t.tagName === 'IMG') console.warn('Falha ao carregar imagem:', t.src);

@@ -3,6 +3,7 @@
     {
       "nome": "Maurílio",
       "posicao": "Goleiro",
+      "idade": 35,
       "gols": 0,
       "assistencias": 0,
       "foto": "https://renatosouzar8.github.io/site-afc/galeria/jogadores/maurilio.jpg"
@@ -10,6 +11,7 @@
     {
       "nome": "Diego",
       "posicao": "Zagueiro",
+      "idade": 32,
       "gols": 0,
       "assistencias": 0,
       "foto": ""
@@ -17,6 +19,7 @@
     {
       "nome": "Ditão",
       "posicao": "Zagueiro",
+      "idade": 38,
       "gols": 0,
       "assistencias": 0,
       "foto": ""
@@ -24,6 +27,7 @@
     {
       "nome": "Wando",
       "posicao": "Zagueiro",
+      "idade": 34,
       "gols": 0,
       "assistencias": 0,
       "foto": ""
@@ -31,6 +35,7 @@
     {
       "nome": "Rafael Moura",
       "posicao": "Zagueiro",
+      "idade": 29,
       "gols": 0,
       "assistencias": 0,
       "foto": ""
@@ -38,6 +43,7 @@
     {
       "nome": "Cléber",
       "posicao": "Lateral",
+      "idade": 31,
       "gols": 0,
       "assistencias": 0,
       "foto": ""
@@ -45,6 +51,7 @@
     {
       "nome": "Rique",
       "posicao": "Lateral",
+      "idade": 28,
       "gols": 0,
       "assistencias": 0,
       "foto": ""
@@ -52,6 +59,7 @@
     {
       "nome": "Tael",
       "posicao": "Lateral",
+      "idade": 30,
       "gols": 0,
       "assistencias": 0,
       "foto": ""
@@ -59,6 +67,7 @@
     {
       "nome": "Felipe França",
       "posicao": "Volante",
+      "idade": 29,
       "gols": 0,
       "assistencias": 0,
       "foto": ""
@@ -66,6 +75,7 @@
     {
       "nome": "Felipe Costa",
       "posicao": "Volante",
+      "idade": 33,
       "gols": 0,
       "assistencias": 0,
       "foto": ""
@@ -73,6 +83,7 @@
     {
       "nome": "Edgar",
       "posicao": "Volante",
+      "idade": 36,
       "gols": 0,
       "assistencias": 0,
       "foto": ""
@@ -80,6 +91,7 @@
     {
       "nome": "Renato",
       "posicao": "Meia",
+      "idade": 34,
       "gols": 4,
       "assistencias": 2,
       "foto": ""
@@ -87,6 +99,7 @@
     {
       "nome": "Neto",
       "posicao": "Meia",
+      "idade": 31,
       "gols": 6,
       "assistencias": 5,
       "foto": ""
@@ -94,6 +107,7 @@
     {
       "nome": "Renan",
       "posicao": "Meia",
+      "idade": 27,
       "gols": 0,
       "assistencias": 0,
       "foto": ""
@@ -101,6 +115,7 @@
     {
       "nome": "Higor",
       "posicao": "Meia",
+      "idade": 26,
       "gols": 0,
       "assistencias": 0,
       "foto": ""
@@ -108,6 +123,7 @@
     {
       "nome": "William",
       "posicao": "Meia",
+      "idade": 29,
       "gols": 0,
       "assistencias": 0,
       "foto": ""
@@ -115,6 +131,7 @@
     {
       "nome": "Rafael",
       "posicao": "Atacante",
+      "idade": 30,
       "gols": 0,
       "assistencias": 0,
       "foto": ""
@@ -122,6 +139,7 @@
     {
       "nome": "Kelvin",
       "posicao": "Atacante",
+      "idade": 28,
       "gols": 0,
       "assistencias": 0,
       "foto": ""
@@ -129,6 +147,7 @@
     {
       "nome": "Amaral",
       "posicao": "Atacante",
+      "idade": 37,
       "gols": 0,
       "assistencias": 0,
       "foto": ""
@@ -136,6 +155,7 @@
     {
       "nome": "Edinho",
       "posicao": "Atacante",
+      "idade": 33,
       "gols": 0,
       "assistencias": 0,
       "foto": ""
@@ -143,6 +163,7 @@
     {
       "nome": "Ricardinho",
       "posicao": "Atacante",
+      "idade": 32,
       "gols": 0,
       "assistencias": 0,
       "foto": ""

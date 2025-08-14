@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - AFC</title>
+  <style>
+    :root{
+      --primary:#e5093a; --primary-600:#c3072f; --bg:#0e0f12; --surface:#15161b;
+      --surface-2:rgba(255,255,255,.06); --text:#e7e7ea; --muted:#a9a9b3;
+      --accent:#ffd66d; --info:#3b82f6; --border:rgba(255,255,255,.12);
+      --glass:rgba(255,255,255,.04); --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:14px;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .container {
+      width: 90%;
+      max-width: 900px;
+      margin: 20px;
+    }
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0 6px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid var(--border);
+      color: #fff;
+      border-radius: 10px;
+    }
+    button {
+      padding: 10px 16px;
+      margin: 10px 6px 0 0;
+      border: 1px solid var(--border);
+      background: var(--glass);
+      color: #fff;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button.primary {
+      background: linear-gradient(180deg,var(--primary),var(--primary-600));
+      border-color: transparent;
+    }
+    #admin-panel { display: none; }
+    #admin-panel.visible { display: block; }
+    .admin-card{background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:18px}
+    .admin-form-table{width:100%}
+    .admin-form-table td,.admin-form-table th{padding:6px;text-align:left}
+    .admin-form-table input,#admin-panel textarea{width:100%;padding:10px;background:rgba(255,255,255,.06);border:1px solid var(--border);color:#fff;border-radius:10px}
+    #admin-panel button{background:linear-gradient(180deg,var(--primary),var(--primary-600));color:#fff;border:none;padding:12px 18px;border-radius:10px;font-size:1rem;cursor:pointer;margin-top:10px;font-weight:700;box-shadow:0 8px 18px rgba(229,9,58,.3)}
+    .action-button{background:linear-gradient(180deg,#16a34a,#0f8a3c)!important;box-shadow:0 8px 18px rgba(16,185,129,.25)!important}
+    .admin-thumb{width:80px;height:56px;object-fit:cover;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.05)}
+    .admin-remove{background:#b91c1c;color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer}
+    h1, h2, h3 { font-family: 'Outfit', sans-serif; }
+    #status-message { margin-top: 15px; padding: 10px; border-radius: 8px; display: none; }
+    #status-message.success { background-color: #16a34a; color: #fff; }
+    #status-message.error { background-color: #b91c1c; color: #fff; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div id="admin-login" class="modal">
+      <h3>Área Administrativa</h3>
+      <input type="password" id="admin-pass" placeholder="Senha">
+      <div>
+        <button onclick="checkPassword()" class="primary">Entrar</button>
+      </div>
+      <p id="admin-msg-login" style="color:#ff6b6b;"></p>
+    </div>
+
+    <div id="admin-panel">
+      <h1>Painel de Administração</h1>
+
+      <div class="admin-card">
+        <h3>Configuração do GitHub</h3>
+        <p>Para salvar as alterações diretamente no site, você precisa de um <a href="https://github.com/settings/tokens/new?scopes=repo&description=Site%20AFC%20Token" target="_blank" rel="noopener noreferrer">Personal Access Token</a> do GitHub com permissão de "repo".</p>
+        <label for="github-token">Personal Access Token (PAT)</label>
+        <input type="password" id="github-token" placeholder="Cole seu token aqui">
+        <label for="github-repo">Repositório (ex: usuario/repo)</label>
+        <input type="text" id="github-repo" placeholder="renatosouzar8/site-afc">
+      </div>
+
+      <div class="admin-card">
+        <h3>Editar Calendário e Resultados</h3>
+        <table class="admin-form-table">
+          <thead><tr><th>Data</th><th>Adversário</th><th>Resultado</th><th>Detalhes</th></tr></thead>
+          <tbody id="admin-calendario-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="admin-card">
+        <h3>Editar Estatísticas dos Jogadores</h3>
+        <table class="admin-form-table">
+          <thead><tr><th>Jogador</th><th>Idade</th><th>Gols</th><th>Assistências</th></tr></thead>
+          <tbody id="admin-jogadores-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="admin-card">
+          <button id="btn-save-all" class="action-button">Salvar Todas as Alterações no Site</button>
+          <div id="status-message"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const GITHUB_API = 'https://api.github.com';
+    const DATA_FILE_PATH = 'dados_afc.json';
+    let siteData = null;
+    let fileSha = null;
+
+    function checkPassword() {
+      const pass = document.getElementById('admin-pass').value;
+      if (pass === '4940') {
+        document.getElementById('admin-login').style.display = 'none';
+        document.getElementById('admin-panel').classList.add('visible');
+        // Auto-fill repo from a potential query param for convenience
+        const urlParams = new URLSearchParams(window.location.search);
+        const repoParam = urlParams.get('repo');
+        if(repoParam) document.getElementById('github-repo').value = repoParam;
+
+        loadInitialData();
+      } else {
+        document.getElementById('admin-msg-login').textContent = 'Senha incorreta!';
+      }
+    }
+
+    async function loadInitialData() {
+      const repo = document.getElementById('github-repo').value.trim();
+      if (!repo) {
+        // Try to guess from window location if it's a github pages site
+        if(window.location.hostname.endsWith('.github.io')) {
+            const user = window.location.hostname.split('.')[0];
+            const repoName = window.location.pathname.split('/')[1];
+            if(user && repoName) {
+                document.getElementById('github-repo').value = `${user}/${repoName}`;
+                loadInitialData(); // retry with guessed repo
+                return;
+            }
+        }
+        showStatus('Por favor, informe o repositório do GitHub (ex: usuario/repo).', true);
+        return;
+      }
+
+      showStatus('Carregando dados do repositório...');
+      try {
+        const fileUrl = `https://raw.githubusercontent.com/${repo}/main/${DATA_FILE_PATH}?t=${Date.now()}`;
+        const response = await fetch(fileUrl);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        siteData = await response.json();
+        populateAdminForms();
+        showStatus('Dados carregados. Você já pode editar.', false);
+      } catch (error) {
+        showStatus(`Erro ao carregar dados: ${error.message}. Verifique o nome do repositório e se o arquivo existe na branch 'main'.`, true);
+      }
+    }
+
+    function populateAdminForms() {
+      if (!siteData) return;
+
+      const calendarioTbody = document.getElementById('admin-calendario-tbody');
+      const jogadoresTbody = document.getElementById('admin-jogadores-tbody');
+      calendarioTbody.innerHTML = '';
+      jogadoresTbody.innerHTML = '';
+
+      // Sort calendar by date before rendering
+      siteData.calendario.sort((a,b) => new Date(a.data) - new Date(b.data));
+
+      siteData.calendario.forEach(jogo => {
+        const row = calendarioTbody.insertRow();
+        row.innerHTML = `
+          <td><input type="date" value="${jogo.data}"></td>
+          <td><input type="text" value="${jogo.adversario}"></td>
+          <td><input type="text" placeholder="ex: 2x1" value="${jogo.resultado || ''}"></td>
+          <td><input type="text" placeholder="Detalhes dos gols..." value="${jogo.detalhes || ''}"></td>
+        `;
+      });
+
+      siteData.jogadores.forEach(jogador => {
+        const row = jogadoresTbody.insertRow();
+        row.innerHTML = `
+          <td>${jogador.nome} (${jogador.posicao})</td>
+          <td><input type="number" value="${jogador.idade || ''}" min="15"></td>
+          <td><input type="number" value="${jogador.gols || 0}" min="0"></td>
+          <td><input type="number" value="${jogador.assistencias || 0}" min="0"></td>
+        `;
+      });
+    }
+
+    function generateDataFromForms() {
+        const newCalendario = Array.from(document.querySelectorAll('#admin-calendario-tbody tr')).map(row => {
+            const i = row.querySelectorAll('input');
+            return { data: i[0].value, adversario: i[1].value, resultado: i[2].value.trim() || null, detalhes: i[3].value };
+        });
+
+        const newJogadores = Array.from(document.querySelectorAll('#admin-jogadores-tbody tr')).map((row, index) => {
+            const i = row.querySelectorAll('input');
+            const base = siteData.jogadores[index];
+            return {
+                nome: base.nome,
+                posicao: base.posicao,
+                idade: parseInt(i[0].value || '0', 10),
+                gols: parseInt(i[1].value || '0', 10),
+                assistencias: parseInt(i[2].value || '0', 10),
+                foto: base.foto || ''
+            };
+        });
+
+        // We don't edit the gallery here, so we keep the original data.
+        // A more robust solution would be to fetch and include it.
+        return { jogadores: newJogadores, calendario: newCalendario, galeria: siteData.galeria || [] };
+    }
+
+    async function getFileSha(repo, token) {
+        const url = `${GITHUB_API}/repos/${repo}/contents/${DATA_FILE_PATH}`;
+        const response = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
+        if (!response.ok) throw new Error(`Erro ao buscar SHA do arquivo: ${response.statusText}`);
+        const data = await response.json();
+        return data.sha;
+    }
+
+    async function updateDataOnGitHub() {
+      const token = document.getElementById('github-token').value.trim();
+      const repo = document.getElementById('github-repo').value.trim();
+
+      if (!token || !repo) {
+        showStatus('Por favor, preencha o Token e o Repositório do GitHub.', true);
+        return;
+      }
+
+      showStatus('Salvando alterações no GitHub...');
+
+      try {
+        const currentSha = await getFileSha(repo, token);
+        const newData = generateDataFromForms();
+        const content = JSON.stringify(newData, null, 2);
+
+        // Correct Base64 encoding for UTF-8
+        const encodedContent = btoa(unescape(encodeURIComponent(content)));
+
+        const url = `${GITHUB_API}/repos/${repo}/contents/${DATA_FILE_PATH}`;
+        const response = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${token}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/vnd.github.v3+json',
+          },
+          body: JSON.stringify({
+            message: `Atualização de dados do site AFC via painel admin (${new Date().toLocaleDateString('pt-BR')})`,
+            content: encodedContent,
+            sha: currentSha,
+          }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`Erro ao salvar no GitHub: ${errorData.message}`);
+        }
+
+        showStatus('Dados atualizados com sucesso! O site deve refletir as mudanças em alguns instantes.', false);
+        setTimeout(() => {
+            document.getElementById('status-message').style.display = 'none';
+        }, 5000);
+
+      } catch (error) {
+        showStatus(`Falha ao salvar: ${error.message}. Verifique seu token e o nome do repositório.`, true);
+      }
+    }
+
+    function showStatus(message, isError = false) {
+        const el = document.getElementById('status-message');
+        el.textContent = message;
+        el.className = isError ? 'error' : 'success';
+        el.style.display = 'block';
+    }
+
+    document.getElementById('btn-save-all').addEventListener('click', updateDataOnGitHub);
+    document.getElementById('admin-pass').addEventListener('keydown', (e) => {
+        if(e.key === 'Enter') checkPassword();
+    });
+  </script>
+
+</body>
+</html>
