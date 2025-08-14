@@ -102,14 +102,16 @@
           <thead><tr><th>Data</th><th>Adversário</th><th>Resultado</th><th>Detalhes</th></tr></thead>
           <tbody id="admin-calendario-tbody"></tbody>
         </table>
+        <button id="btn-add-game">Adicionar Novo Jogo</button>
       </div>
 
       <div class="admin-card">
         <h3>Editar Estatísticas dos Jogadores</h3>
         <table class="admin-form-table">
-          <thead><tr><th>Jogador</th><th>Idade</th><th>Gols</th><th>Assistências</th></tr></thead>
+          <thead><tr><th>Nome</th><th>Posição</th><th>Idade</th><th>Gols</th><th>Assistências</th><th>Foto (URL)</th></tr></thead>
           <tbody id="admin-jogadores-tbody"></tbody>
         </table>
+        <button id="btn-add-player">Adicionar Novo Jogador</button>
       </div>
 
       <div class="admin-card">
@@ -144,13 +146,12 @@
     async function loadInitialData() {
       const repo = document.getElementById('github-repo').value.trim();
       if (!repo) {
-        // Try to guess from window location if it's a github pages site
         if(window.location.hostname.endsWith('.github.io')) {
             const user = window.location.hostname.split('.')[0];
             const repoName = window.location.pathname.split('/')[1];
             if(user && repoName) {
                 document.getElementById('github-repo').value = `${user}/${repoName}`;
-                loadInitialData(); // retry with guessed repo
+                loadInitialData();
                 return;
             }
         }
@@ -159,15 +160,24 @@
       }
 
       showStatus('Carregando dados do repositório...');
-      try {
-        const fileUrl = `https://raw.githubusercontent.com/${repo}/main/${DATA_FILE_PATH}?t=${Date.now()}`;
-        const response = await fetch(fileUrl);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        siteData = await response.json();
-        populateAdminForms();
-        showStatus('Dados carregados. Você já pode editar.', false);
-      } catch (error) {
-        showStatus(`Erro ao carregar dados: ${error.message}. Verifique o nome do repositório e se o arquivo existe na branch 'main'.`, true);
+      let error = null;
+      for (const branch of ['main', 'master']) {
+        try {
+          const fileUrl = `https://raw.githubusercontent.com/${repo}/${branch}/${DATA_FILE_PATH}?t=${Date.now()}`;
+          const response = await fetch(fileUrl);
+          if (!response.ok) throw new Error(`HTTP ${response.status} on branch ${branch}`);
+          siteData = await response.json();
+          populateAdminForms();
+          showStatus('Dados carregados. Você já pode editar.', false);
+          error = null;
+          break;
+        } catch (e) {
+          error = e;
+        }
+      }
+
+      if(error) {
+        showStatus(`Erro ao carregar dados: ${error.message}. Verifique o nome do repositório e se o arquivo existe nas branches 'main' or 'master'.`, true);
       }
     }
 
@@ -179,52 +189,55 @@
       calendarioTbody.innerHTML = '';
       jogadoresTbody.innerHTML = '';
 
-      // Sort calendar by date before rendering
       siteData.calendario.sort((a,b) => new Date(a.data) - new Date(b.data));
 
-      siteData.calendario.forEach(jogo => {
-        const row = calendarioTbody.insertRow();
-        row.innerHTML = `
-          <td><input type="date" value="${jogo.data}"></td>
-          <td><input type="text" value="${jogo.adversario}"></td>
-          <td><input type="text" placeholder="ex: 2x1" value="${jogo.resultado || ''}"></td>
-          <td><input type="text" placeholder="Detalhes dos gols..." value="${jogo.detalhes || ''}"></td>
-        `;
-      });
-
-      siteData.jogadores.forEach(jogador => {
-        const row = jogadoresTbody.insertRow();
-        row.innerHTML = `
-          <td>${jogador.nome} (${jogador.posicao})</td>
-          <td><input type="number" value="${jogador.idade || ''}" min="15"></td>
-          <td><input type="number" value="${jogador.gols || 0}" min="0"></td>
-          <td><input type="number" value="${jogador.assistencias || 0}" min="0"></td>
-        `;
-      });
+      siteData.calendario.forEach(jogo => addGameRow(jogo));
+      siteData.jogadores.forEach(jogador => addPlayerRow(jogador));
     }
 
     function generateDataFromForms() {
         const newCalendario = Array.from(document.querySelectorAll('#admin-calendario-tbody tr')).map(row => {
             const i = row.querySelectorAll('input');
             return { data: i[0].value, adversario: i[1].value, resultado: i[2].value.trim() || null, detalhes: i[3].value };
-        });
+        }).filter(j => j.data && j.adversario); // Filter out empty new rows
 
-        const newJogadores = Array.from(document.querySelectorAll('#admin-jogadores-tbody tr')).map((row, index) => {
+        const newJogadores = Array.from(document.querySelectorAll('#admin-jogadores-tbody tr')).map(row => {
             const i = row.querySelectorAll('input');
-            const base = siteData.jogadores[index];
             return {
-                nome: base.nome,
-                posicao: base.posicao,
-                idade: parseInt(i[0].value || '0', 10),
-                gols: parseInt(i[1].value || '0', 10),
-                assistencias: parseInt(i[2].value || '0', 10),
-                foto: base.foto || ''
+                nome: i[0].value.trim(),
+                posicao: i[1].value.trim(),
+                idade: parseInt(i[2].value || '0', 10),
+                gols: parseInt(i[3].value || '0', 10),
+                assistencias: parseInt(i[4].value || '0', 10),
+                foto: i[5].value.trim()
             };
-        });
+        }).filter(j => j.nome && j.posicao); // Filter out empty new rows
 
-        // We don't edit the gallery here, so we keep the original data.
-        // A more robust solution would be to fetch and include it.
-        return { jogadores: newJogadores, calendario: newCalendario, galeria: siteData.galeria || [] };
+        return { jogadores: newJogadores, calendario: newCalendario, galeria: siteData?.galeria || [] };
+    }
+
+    function addGameRow(jogo = {}) {
+        const tbody = document.getElementById('admin-calendario-tbody');
+        const row = tbody.insertRow();
+        row.innerHTML = `
+          <td><input type="date" value="${jogo.data || ''}"></td>
+          <td><input type="text" value="${jogo.adversario || ''}"></td>
+          <td><input type="text" placeholder="ex: 2x1" value="${jogo.resultado || ''}"></td>
+          <td><input type="text" placeholder="Detalhes dos gols..." value="${jogo.detalhes || ''}"></td>
+        `;
+    }
+
+    function addPlayerRow(jogador = {}) {
+        const tbody = document.getElementById('admin-jogadores-tbody');
+        const row = tbody.insertRow();
+        row.innerHTML = `
+          <td><input type="text" placeholder="Nome do jogador" value="${jogador.nome || ''}"></td>
+          <td><input type="text" placeholder="Posição" value="${jogador.posicao || ''}"></td>
+          <td><input type="number" placeholder="Idade" value="${jogador.idade || ''}" min="15"></td>
+          <td><input type="number" value="${jogador.gols || 0}" min="0"></td>
+          <td><input type="number" value="${jogador.assistencias || 0}" min="0"></td>
+          <td><input type="text" placeholder="URL da foto" value="${jogador.foto || ''}"></td>
+        `;
     }
 
     async function getFileSha(repo, token) {
@@ -236,6 +249,11 @@
     }
 
     async function updateDataOnGitHub() {
+      if (!siteData) {
+        showStatus('Os dados iniciais não foram carregados. Verifique o repositório e recarregue a página antes de salvar.', true);
+        return;
+      }
+
       const token = document.getElementById('github-token').value.trim();
       const repo = document.getElementById('github-repo').value.trim();
 
@@ -292,6 +310,8 @@
     }
 
     document.getElementById('btn-save-all').addEventListener('click', updateDataOnGitHub);
+    document.getElementById('btn-add-game').addEventListener('click', () => addGameRow());
+    document.getElementById('btn-add-player').addEventListener('click', () => addPlayerRow());
     document.getElementById('admin-pass').addEventListener('keydown', (e) => {
         if(e.key === 'Enter') checkPassword();
     });
